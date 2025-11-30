@@ -2,6 +2,8 @@ from flask import Flask, render_template, request, redirect, url_for, session, j
 from dotenv import load_dotenv
 from keyword_engine import hybrid_keywords, hybrid_keyphrases
 from werkzeug.security import generate_password_hash, check_password_hash
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 import sqlite3
 import os
 
@@ -26,6 +28,17 @@ def init_db():
             username TEXT UNIQUE NOT NULL,
             email TEXT UNIQUE NOT NULL,
             password_hash TEXT NOT NULL
+        )
+        """
+    )
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS articles (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER,
+            content TEXT NOT NULL,
+            created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY(user_id) REFERENCES users(id)
         )
         """
     )
@@ -98,13 +111,67 @@ def dashboard():
 def extract():
     if "username" not in session:
         return jsonify({"error": "Unauthorized"}), 401
+
     data = request.get_json()
     text = data.get("text", "")
     if not text.strip():
         return jsonify({"error": "No text provided"}), 400
+
+    conn = get_db()
+    cur = conn.execute("SELECT id FROM users WHERE username = ?", (session["username"],))
+    user_row = cur.fetchone()
+    user_id = user_row["id"] if user_row else None
+
+    cur = conn.execute(
+        "SELECT id, content FROM articles WHERE user_id = ? ORDER BY created_at DESC LIMIT 50",
+        (user_id,)
+    )
+    rows = cur.fetchall()
+
+    similar_articles = []
+    if rows:
+        docs = [text] + [r["content"] for r in rows]
+        vectorizer = TfidfVectorizer(stop_words="english")
+        tfidf = vectorizer.fit_transform(docs)
+        sims = cosine_similarity(tfidf[0:1], tfidf[1:]).flatten()
+        indexed = list(enumerate(sims))
+        indexed.sort(key=lambda x: x[1], reverse=True)
+        for idx, score in indexed:
+            if score < 0.45:
+                break
+            r = rows[idx]
+            snippet = r["content"].replace("\n", " ")
+            if len(snippet) > 220:
+                snippet = snippet[:220] + "..."
+            similar_articles.append(
+                {
+                    "id": int(r["id"]),
+                    "similarity": float(score),
+                    "snippet": snippet
+                }
+            )
+            if len(similar_articles) >= 3:
+                break
+
+    if user_id is not None:
+        conn.execute(
+            "INSERT INTO articles (user_id, content) VALUES (?, ?)",
+            (user_id, text)
+        )
+        conn.commit()
+
+    conn.close()
+
     keywords = hybrid_keywords(text)
     keyphrases = hybrid_keyphrases(text)
-    return jsonify({"keywords": keywords, "keyphrases": keyphrases})
+
+    return jsonify(
+        {
+            "keywords": keywords,
+            "keyphrases": keyphrases,
+            "similar_articles": similar_articles
+        }
+    )
 
 if __name__ == "__main__":
     app.run(debug=True)

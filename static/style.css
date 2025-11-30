@@ -159,8 +159,6 @@ text-align:right;
 opacity:0.82;
 }
 
-/* home */
-
 .hero-section{
 max-width:1120px;
 width:100%;
@@ -364,8 +362,6 @@ border:1px solid rgba(129,140,248,0.9);
 color:#e5e7eb;
 }
 
-/* info section */
-
 .info-grid{
 max-width:1120px;
 width:100%;
@@ -408,8 +404,6 @@ font-size:0.9rem;
 line-height:1.6;
 color:#d1d5db;
 }
-
-/* auth */
 
 .auth-section{
 max-width:1120px;
@@ -492,8 +486,6 @@ font-size:0.8rem;
 color:#9ca3af;
 text-align:center;
 }
-
-/* dashboard */
 
 .dash-section{
 max-width:1120px;
@@ -661,7 +653,32 @@ border-color:rgba(129,140,248,0.9);
 color:#c7d2fe;
 }
 
-/* responsive */
+.similar-list{
+display:flex;
+flex-direction:column;
+gap:0.75rem;
+margin-top:6px;
+}
+
+.similar-item{
+padding:0.75rem 0.9rem;
+border-radius:0.75rem;
+background:rgba(15,23,42,0.98);
+border:1px solid rgba(55,65,81,0.9);
+}
+
+.similar-score{
+font-size:0.75rem;
+opacity:0.75;
+margin-bottom:0.25rem;
+color:#cbd5f5;
+}
+
+.similar-snippet{
+font-size:0.85rem;
+line-height:1.45;
+color:#e5e7eb;
+}
 
 @media(max-width:960px){
 .hero-section{
