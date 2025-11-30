@@ -11,7 +11,12 @@ STOPWORDS = {
 "among","is","am","are","was","were","be","being","been","this","that","these",
 "those","it","its","i","you","he","she","they","we","him","her","them","my",
 "your","our","their","so","not","no","yes","can","could","should","would",
-"will","just","than","too","very","also","such"
+"will","just","than","too","very","also","such","has","have","had","one",
+"two","three","more","most","many","much","any","some","each","other",
+"another","within","across","against","while","where","when","which",
+"whose","what","who","whom","why","how","into","onto","ever","ever",
+"said","made","make","makes","doing","done","seen","used","using",
+"based","according","including","include","includes","may","might"
 }
 
 try:
@@ -19,16 +24,24 @@ try:
 except Exception:
     keyphrase_model = None
 
-def rule_based_keywords(text,top_n=20):
+def clean_tokens(text):
     tokens = simple_preprocess(text)
-    tokens = [t for t in tokens if t not in STOPWORDS and len(t)>2]
+    tokens = [t for t in tokens if t not in STOPWORDS and len(t) >= 4]
+    return tokens
+
+def rule_based_keywords(text, top_n=20):
+    tokens = clean_tokens(text)
     if not tokens:
         return []
     freq = Counter(tokens)
     return [w for w,_ in freq.most_common(top_n)]
 
-def ml_keywords(text,top_n=20):
-    docs = [text]
+def ml_keywords(text, top_n=20):
+    tokens = clean_tokens(text)
+    if not tokens:
+        return []
+    doc = " ".join(tokens)
+    docs = [doc]
     vectorizer = TfidfVectorizer(ngram_range=(1,1),stop_words="english")
     try:
         tfidf_matrix = vectorizer.fit_transform(docs)
@@ -39,7 +52,7 @@ def ml_keywords(text,top_n=20):
     scored = sorted(zip(feature_names,scores),key=lambda x:x[1],reverse=True)
     return [term for term,score in scored[:top_n]]
 
-def hybrid_keywords(text,top_n=20):
+def hybrid_keywords(text, top_n=20):
     rule = rule_based_keywords(text,top_n)
     ml = ml_keywords(text,top_n)
     combined = []
@@ -111,5 +124,4 @@ def model_keyphrases(text,top_n=20,min_prob=0.55):
     return filtered[:top_n]
 
 def hybrid_keyphrases(text,top_n=20):
-    phrases = model_keyphrases(text,top_n)
-    return phrases
+    return model_keyphrases(text,top_n)
