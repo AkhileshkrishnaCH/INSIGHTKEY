@@ -134,22 +134,34 @@ def extract():
         vectorizer = TfidfVectorizer(stop_words="english")
         tfidf = vectorizer.fit_transform(docs)
         sims = cosine_similarity(tfidf[0:1], tfidf[1:]).flatten()
+
         indexed = list(enumerate(sims))
         indexed.sort(key=lambda x: x[1], reverse=True)
+
+        MIN_SIM = 0.80
+        MAX_SIM = 0.999
+        seen_ids = set()
+
         for idx, score in indexed:
-            if score < 0.45:
+            if score < MIN_SIM:
                 break
+            if score >= MAX_SIM:
+                continue
             r = rows[idx]
+            article_id = int(r["id"])
+            if article_id in seen_ids:
+                continue
             snippet = r["content"].replace("\n", " ")
             if len(snippet) > 220:
                 snippet = snippet[:220] + "..."
             similar_articles.append(
                 {
-                    "id": int(r["id"]),
+                    "id": article_id,
                     "similarity": float(score),
                     "snippet": snippet
                 }
             )
+            seen_ids.add(article_id)
             if len(similar_articles) >= 3:
                 break
 
