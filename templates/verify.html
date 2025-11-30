@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="auth-section">
+<div class="auth-card">
+<div class="auth-header">
+<h2 class="auth-title">Verify your email</h2>
+<p class="auth-subtitle">
+We have sent a 6-digit code to <strong>{{ email }}</strong>. Enter it below within 3 minutes to complete registration.
+</p>
+</div>
+<form method="post" class="auth-form">
+<label class="field-label">Verification code</label>
+<input type="text" name="otp" placeholder="Enter 6-digit code" class="field-input">
+{% if error %}
+<div class="field-error">{{ error }}</div>
+{% endif %}
+<button type="submit" class="btn-primary full-width">Verify</button>
+</form>
+{% if expired %}
+<div class="auth-footer-note">
+<span>OTP expired or incorrect. <a href="{{ url_for('signup') }}">Start sign up again</a></span>
+</div>
+{% else %}
+<div class="auth-footer-note">
+<span>Didn’t receive the code? Check spam or try again.</span>
+</div>
+{% endif %}
+</div>
+</section>
+{% endblock %}

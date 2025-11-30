@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="auth-section">
+<div class="auth-card">
+<div class="auth-header">
+<h2 class="auth-title">Login</h2>
+<p class="auth-subtitle">Sign in to access your keyword workspace.</p>
+</div>
+<form method="post" class="auth-form">
+<label class="field-label">Email</label>
+<input type="email" name="email" placeholder="you@example.com" class="field-input">
+<label class="field-label">Password</label>
+<input type="password" name="password" placeholder="Enter your password" class="field-input">
+{% if error %}
+<div class="field-error">{{ error }}</div>
+{% endif %}
+<button type="submit" class="btn-primary full-width">Login</button>
+</form>
+<div class="auth-footer-note">
+<span>New here? <a href="{{ url_for('signup') }}">Create an account</a></span>
+</div>
+</div>
+</section>
+{% endblock %}

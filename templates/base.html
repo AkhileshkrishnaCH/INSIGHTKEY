@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>InsightKey | Keyword Extractor</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="bg-gradient"></div>
+<div class="bg-orb orb-1"></div>
+<div class="bg-orb orb-2"></div>
+<div class="bg-orb orb-3"></div>
+<div class="app-shell">
+<header class="top-bar">
+<div class="logo-wrap">
+<div class="logo-dot"></div>
+<span class="logo-text">InsightKey</span>
+</div>
+<nav class="top-nav">
+<a href="{{ url_for('home') }}" class="nav-link">Home</a>
+{% if not session.get('username') %}
+<a href="{{ url_for('login') }}" class="nav-link">Login</a>
+<a href="{{ url_for('signup') }}" class="nav-link nav-cta-outline">Sign up</a>
+{% else %}
+<a href="{{ url_for('dashboard') }}" class="nav-link">Workspace</a>
+<a href="{{ url_for('logout') }}" class="nav-link nav-cta-outline">Logout</a>
+<span class="nav-user-pill">{{ session['username'] }}</span>
+{% endif %}
+</nav>
+</header>
+<main class="page-main">
+{% block content %}{% endblock %}
+</main>
+<footer class="page-footer">
+<span>Built for journalists, researchers and investigators</span>
+</footer>
+</div>
+</body>
+</html>

@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="hero-section">
+<div class="hero-copy">
+<div class="eyebrow-pill">AI powered research assistant</div>
+<h1 class="hero-title">Extract the signal from investigative noise.</h1>
+<p class="hero-subtitle">
+Paste long-form articles or reports and instantly get meaningful keywords and keyphrases,
+designed for newsroom and research workflows.
+</p>
+<div class="hero-actions">
+<a href="{{ url_for('login') }}" class="btn-primary">Start extracting</a>
+<a href="#how-it-works" class="btn-ghost">How it works</a>
+</div>
+<div class="hero-meta">
+<span class="meta-chip">Rule-based + ML ranking</span>
+<span class="meta-chip">Optimized for narrative text</span>
+<span class="meta-chip">No installation required</span>
+</div>
+</div>
+<div class="hero-preview-card">
+<div class="preview-header">
+<span class="preview-title">Live preview</span>
+<span class="preview-badge">Demo</span>
+</div>
+<div class="preview-body">
+<div class="preview-input">
+<div class="preview-label">Input excerpt</div>
+<p class="preview-text">
+The investigation reveals a complex network of shell companies used to channel funds during the election...
+</p>
+</div>
+<div class="preview-columns">
+<div class="preview-col">
+<div class="preview-label">Keywords</div>
+<ul class="preview-tags">
+<li>shell companies</li>
+<li>election funding</li>
+<li>campaign finance</li>
+<li>offshore accounts</li>
+</ul>
+</div>
+<div class="preview-col">
+<div class="preview-label">Keyphrases</div>
+<ul class="preview-tags">
+<li>complex network of shell companies</li>
+<li>undisclosed election donations</li>
+<li>cross-border money trail</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="how-it-works" class="info-grid">
+<div class="info-card">
+<h2 class="info-title">Built for real investigations</h2>
+<p class="info-text">
+Upload or paste drafts, leaked documents or long-form analysis.
+InsightKey surfaces entities and phrases that actually help you follow the story.
+</p>
+</div>
+<div class="info-card">
+<h3 class="info-subtitle">Hybrid engine</h3>
+<ul class="info-list">
+<li>Rule-based filters for noisy boilerplate</li>
+<li>TF-IDF layer to prioritize rich terms</li>
+<li>Noun-phrase extraction for keyphrases</li>
+</ul>
+</div>
+<div class="info-card">
+<h3 class="info-subtitle">Workflow ready</h3>
+<ul class="info-list">
+<li>Copy keywords in one click</li>
+<li>Use phrases as tags or search anchors</li>
+<li>Ideal for story planning and research memos</li>
+</ul>
+</div>
+</section>
+{% endblock %}

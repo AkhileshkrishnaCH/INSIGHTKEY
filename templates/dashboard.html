@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="dash-section">
+<div class="dash-header-row">
+<div>
+<h2 class="dash-title">Workspace</h2>
+<p class="dash-subtitle">Hi {{ username }}, paste a document and extract keywords and keyphrases tuned for investigations.</p>
+</div>
+<div class="dash-badge-pill">Hybrid rule-based + ML</div>
+</div>
+<div class="dash-layout">
+<div class="dash-column dash-left">
+<div class="panel">
+<div class="panel-header">
+<span class="panel-title">Source text</span>
+<span class="panel-hint">Paste article, memo or report</span>
+</div>
+<textarea id="input-text" class="panel-textarea" rows="14" placeholder="Paste your article or investigation report here"></textarea>
+<button id="extract-btn" class="btn-primary full-width dash-btn">Extract keywords and keyphrases</button>
+<div class="panel-footnote">Your text is processed only for extraction during this session.</div>
+</div>
+</div>
+<div class="dash-column dash-right">
+<div class="panel">
+<div class="panel-header split">
+<span class="panel-title">Results</span>
+<div class="results-badges">
+<span class="results-chip">Keywords</span>
+<span class="results-chip soft">Keyphrases</span>
+</div>
+</div>
+<div class="results-grid">
+<div class="results-block">
+<div class="results-heading">Keywords</div>
+<ul id="keywords-list" class="results-list"></ul>
+</div>
+<div class="results-block">
+<div class="results-heading">Keyphrases</div>
+<ul id="keyphrases-list" class="results-list"></ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+{% endblock %}
