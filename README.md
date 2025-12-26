@@ -10,8 +10,6 @@ Rule-based text processing
 
 Machine Learning techniques (TF-IDF, Logistic Regression)
 
-
-
 The application provides a clean web interface with user authentication, allowing users to securely log in, submit text, and view extracted keywords and keyphrases.
 
 🎯 Objectives
@@ -40,18 +38,7 @@ Trained using TF-IDF feature vectors
 
 Helps differentiate meaningful investigative content
 
-3. spaCy Pre-trained NLP Model
-Used for noun-phrase extraction
-
-Performs linguistic analysis such as:
-
-Part-of-Speech tagging
-
-Dependency parsing
-
-Phrase chunking
-
-4. Hybrid Model Design
+3. Hybrid Model Design
 Combines:
 
 Rule-based filtering
